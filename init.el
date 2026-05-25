@@ -1,4 +1,6 @@
-(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+(add-to-list 'initial-frame-alist '(fullscreen . fullboth))
+(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+; (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
 ; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(background-color . "#000000"))
 (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
@@ -39,16 +41,15 @@
 (set-fringe-mode 10)                 ; give some breathing room
 (menu-bar-mode -1)                   ; disable menu bar
 ; (load-theme 'whiteboard t)         ; loads a theme
-(pdf-tools-install)
+
+(add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf-view-mode))
+(with-eval-after-load 'pdf-tools
+  (pdf-tools-install))
 (with-eval-after-load 'tex
-  ;; 1. Teach AUCTeX what pdf-tools is
   (add-to-list 'TeX-view-program-list '("pdf-tools" "TeX-pdf-tools-sync-view"))
-  
-  ;; 2. Set it as the default viewer for PDFs
   (add-to-list 'TeX-view-program-selection '(output-pdf "pdf-tools"))
-  
-  ;; 3. Auto-refresh the PDF after compiling
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
