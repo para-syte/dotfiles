@@ -5,14 +5,6 @@
 (add-to-list 'default-frame-alist '(background-color . "#000000"))
 (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
 
-; (defun compileandrun ()
-;  (interactive)
-;  (save-buffer)
-;  (let* ((src (file-name-nondirectory (buffer-file-name)))
-;         (exe (file-name-sans-extension src)))
-;    (compile (concat "g++ -g " src " -o " exe " && ./" exe))))
-;(global-set-key (kbd "<f8>") 'compileandrun)
-
 (global-set-key (kbd "C-=") 'forward-page)
 (global-set-key (kbd "C--") 'backward-page)
 
@@ -24,15 +16,17 @@
 (set-face-attribute 'mode-line nil
 		    :background "white"
 		    :foreground "black"
-		    :box '(:line-width 3 :color "grey"))
+		    :box '(:line-width 3 :color "grey")
+		    :height 1.2)
+(set-face-attribute 'mode-line-inactive nil
+		    :height 1.2)
 
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'c++-mode-hook 'eglot-ensure) ; automatically connects to eglot for cpp projects
-(add-hook 'prog-mode-hook #'whitespace-mode)
-(setq whitespace-line-column 80)
-(setq whitespace-style '(face lines-tail))
 (setq inhibit-startup-message t)     ; disable startup message
-; (setq display-line-numbers-type 'relative)
 (setq visible-bell t)                ; set up visible bell
+; (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode 1) ; enable column numbers
 (display-time-mode 1)                ; adds clock in mode line
 (scroll-bar-mode -1)                 ; disable visible scrollbar
@@ -40,7 +34,6 @@
 (tooltip-mode -1)                    ; disable tooltips
 (set-fringe-mode 10)                 ; give some breathing room
 (menu-bar-mode -1)                   ; disable menu bar
-; (load-theme 'whiteboard t)         ; loads a theme
 
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf-view-mode))
 (with-eval-after-load 'pdf-tools
@@ -49,6 +42,10 @@
   (add-to-list 'TeX-view-program-list '("pdf-tools" "TeX-pdf-tools-sync-view"))
   (add-to-list 'TeX-view-program-selection '(output-pdf "pdf-tools"))
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
+
+(setq-default bidi-display-reordering nil)
+(setq scroll-conservatively 101)
+(setq fast-but-imprecise-scrolling t)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -67,7 +64,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(auctex pdf-tools)))
+ '(package-selected-packages '(auctex company pdf-tools)))
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
